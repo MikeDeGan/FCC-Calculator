@@ -1,0 +1,26 @@
+@font-face {
+  font-family: 'Digital-7 Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./fonts/digital-7.ttf');
+}
+
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+
+  h1 {
+    font-family: 'Digital-7 Regular', 'arial';
+    font-weight: normal;
+  }
+}
