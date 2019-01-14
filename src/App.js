@@ -13,7 +13,9 @@ class App extends Component {
   }
 
   doCalc() {
-    const answer = parseFloat(this.state.currentCalc); //Math.round returns NAN
+    const answer = eval(this.state.currentCalc); //ESLint does not like eval
+    // const answer = `${this.state.currentCalc}`; //ESLint does not like eval
+    //const answer = ${(this.state.currentCalc)};
     console.log(`${this.state.currentCalc} equals ${answer}`);
     this.setState({ display: answer });
   }
