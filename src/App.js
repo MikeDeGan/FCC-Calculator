@@ -23,6 +23,18 @@ class App extends Component {
         multiply: '*',
         divide: '/'
       },
+      myNumCodes: [
+        'zero',
+        'one',
+        'two',
+        'three',
+        'four',
+        'five',
+        'six',
+        'seven',
+        'eight',
+        'nine'
+      ],
       decimalActive: false,
       operatorActive: false,
       validNum: true
@@ -32,6 +44,45 @@ class App extends Component {
     this.hitOperator = this.hitOperator.bind(this);
     this.hitDecimal = this.hitDecimal.bind(this);
     this.hitEquals = this.hitEquals.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleKeyPress);
+  }
+
+  handleKeyPress(e) {
+    let keyCodeHit = e.keyCode;
+    if (keyCodeHit >= 96 && keyCodeHit <= 105) {
+      keyCodeHit -= 96;
+      document.getElementById(this.state.myNumCodes[keyCodeHit]).click();
+      return;
+    }
+    switch (keyCodeHit) {
+      case 13:
+        document.getElementById('equals').click();
+        break;
+      case 67:
+        document.getElementById('clear').click();
+        break;
+      case 106:
+        document.getElementById('multiply').click();
+        break;
+      case 107:
+        document.getElementById('add').click();
+        break;
+      case 109:
+        document.getElementById('subtract').click();
+        break;
+      case 110:
+        document.getElementById('decimal').click();
+        break;
+      case 111:
+        document.getElementById('divide').click();
+        break;
+      default:
+        return;
+    }
   }
 
   hitClear() {
@@ -60,6 +111,12 @@ class App extends Component {
     if (!this.state.validNum) {
       return;
     }
+    // If operator and decimal are both active display looks like this '99+.'
+    // so just return until a number is hit. we don't want '99+.+'
+    if (this.state.operatorActive && this.state.decimalActive) {
+      return;
+    }
+
     let operatorHit = this.state.myIDs[e.target.id];
     const { display, operatorActive } = this.state;
     // Only allow one operator in a row. if last key was an operator replace it with this new operator
