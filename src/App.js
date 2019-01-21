@@ -40,6 +40,7 @@ class App extends Component {
       validNum: true
     };
     this.hitClear = this.hitClear.bind(this);
+    this.hitBackspace = this.hitBackspace.bind(this);
     this.hitNumber = this.hitNumber.bind(this);
     this.hitOperator = this.hitOperator.bind(this);
     this.hitDecimal = this.hitDecimal.bind(this);
@@ -80,7 +81,11 @@ class App extends Component {
       case 111:
         document.getElementById('divide').click();
         break;
+      case 8:
+        document.getElementById('backspace').click();
+        break;
       default:
+        console.log(keyCodeHit);
         return;
     }
   }
@@ -91,6 +96,40 @@ class App extends Component {
       decimalActive: false,
       operatorActive: false,
       validNum: true
+    });
+  }
+
+  hitBackspace() {
+    if (!this.state.validNum || this.state.display.length === 1) {
+      document.getElementById('clear').click();
+      return;
+    }
+    // drop the last key entered
+    let newDisplay = this.state.display.slice(0, -1);
+    // reset the state switches
+    let newOperatorActive = false;
+    let newDecimalActive = false;
+    for (let i = 0; i < newDisplay.length; i++) {
+      switch (newDisplay[i]) {
+        case '+':
+        case '-':
+        case '*':
+        case '/':
+          newOperatorActive = true;
+          newDecimalActive = false;
+          break;
+        case '.':
+          newDecimalActive = true;
+          break;
+        default:
+          // must be a number
+          newOperatorActive = false;
+      }
+    }
+    this.setState({
+      display: newDisplay,
+      operatorActive: newOperatorActive,
+      decimalActive: newDecimalActive
     });
   }
 
@@ -179,6 +218,9 @@ class App extends Component {
             <div id="keypad">
               <button id="clear" onClick={this.hitClear}>
                 C
+              </button>
+              <button id="backspace" onClick={this.hitBackspace}>
+                <i className="fas fa-backspace" />
               </button>
               <button id="divide" onClick={this.hitOperator}>
                 /
