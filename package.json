@@ -2,13 +2,16 @@
   "name": "fcc-calculator",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://mikedegan.github.io/FCC-Calculator",
   "dependencies": {
+    "gh-pages": "^2.0.1",
     "node-sass": "^4.11.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-scripts": "2.1.3"
   },
   "scripts": {
+    "deploy": "npm run build&&gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
