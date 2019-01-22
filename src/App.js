@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import './App.scss';
 
 class App extends Component {
@@ -37,7 +36,8 @@ class App extends Component {
       ],
       decimalActive: false,
       operatorActive: false,
-      validNum: true
+      validNum: true,
+      justHitEquals: false
     };
     this.hitClear = this.hitClear.bind(this);
     this.hitBackspace = this.hitBackspace.bind(this);
@@ -95,7 +95,8 @@ class App extends Component {
       display: '0',
       decimalActive: false,
       operatorActive: false,
-      validNum: true
+      validNum: true,
+      justHitEquals: false
     });
   }
 
@@ -139,9 +140,16 @@ class App extends Component {
       return;
     }
     let numHit = this.state.myIDs[e.target.id];
+    let newDisplay;
+    if (this.state.display === '0' || this.state.justHitEquals) {
+      newDisplay = numHit;
+    } else {
+      newDisplay = this.state.display + numHit;
+    }
     this.setState({
       operatorActive: false,
-      display: this.state.display === '0' ? numHit : this.state.display + numHit
+      justHitEquals: false,
+      display: newDisplay
     });
   }
 
@@ -166,6 +174,7 @@ class App extends Component {
     this.setState({
       decimalActive: false,
       operatorActive: true,
+      justHitEquals: false,
       display: newDisplay
     });
   }
@@ -182,7 +191,8 @@ class App extends Component {
     //Add the decimal to the display and flag as decimalActive
     this.setState({
       decimalActive: true,
-      display: this.state.display + '.'
+      justHitEquals: false,
+      display: this.state.justHitEquals ? '0.' : this.state.display + '.'
     });
   }
 
@@ -202,6 +212,7 @@ class App extends Component {
     this.setState({
       display: answer.toString(),
       decimalActive: answerHasDecimal,
+      justHitEquals: true,
       validNum: validNum
     });
   }
@@ -225,12 +236,6 @@ class App extends Component {
               <button id="divide" onClick={this.hitOperator}>
                 /
               </button>
-              <button id="multiply" onClick={this.hitOperator}>
-                x
-              </button>
-              <button id="subtract" onClick={this.hitOperator}>
-                -
-              </button>
               <button id="seven" onClick={this.hitNumber}>
                 7
               </button>
@@ -239,6 +244,9 @@ class App extends Component {
               </button>
               <button id="nine" onClick={this.hitNumber}>
                 9
+              </button>
+              <button id="multiply" onClick={this.hitOperator}>
+                x
               </button>
               <button id="four" onClick={this.hitNumber}>
                 4
@@ -249,8 +257,8 @@ class App extends Component {
               <button id="six" onClick={this.hitNumber}>
                 6
               </button>
-              <button id="add" onClick={this.hitOperator}>
-                +
+              <button id="subtract" onClick={this.hitOperator}>
+                -
               </button>
               <button id="one" onClick={this.hitNumber}>
                 1
@@ -260,6 +268,9 @@ class App extends Component {
               </button>
               <button id="three" onClick={this.hitNumber}>
                 3
+              </button>
+              <button id="add" onClick={this.hitOperator}>
+                +
               </button>
               <button id="zero" onClick={this.hitNumber}>
                 0
